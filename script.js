@@ -1,19 +1,37 @@
 // 获取页面中的 p 元素
 const paragraph = document.querySelector('p');
+// 保存初始文本内容
+const initialText = paragraph.textContent;
+// 用于记录当前文字是否已经改变的状态
+let isTextChanged = false;
 
-// 为整个文档添加点击和触摸开始事件监听器
-document.addEventListener('click', function (event) {
-    // 检查点击事件是否发生在 p 元素之外（即空白处）
+function handleClickOrTouch(event) {
     if (!paragraph.contains(event.target)) {
-        // 如果是空白处，将 p 元素的文本内容改为“楠楠帮我”
-        paragraph.textContent = '楠楠帮我~';
+        toggleText();
     }
-});
+}
 
-document.addEventListener('touchstart', function (event) {
-    // 检查触摸开始事件是否发生在 p 元素之外（即空白处）
-    if (!paragraph.contains(event.target)) {
-        // 如果是空白处，将 p 元素的文本内容改为“楠楠帮我”
-        paragraph.textContent = '楠楠帮我~';
+function handleKeyPress(event) {
+    // 检查按下的键是否是空格键（keyCode 为 32 或 key 为 ' '）
+    if (event.key === ' ' || event.keyCode === 32) {
+        toggleText();
     }
-});
+}
+
+function toggleText() {
+    if (isTextChanged) {
+        // 如果文字已经改变，将其恢复为初始文本
+        paragraph.textContent = initialText;
+    } else {
+        // 如果文字未改变，将其修改为新的文本
+        paragraph.textContent = 'with楠楠~';
+    }
+    // 切换文字状态
+    isTextChanged = !isTextChanged;
+}
+
+// 监听鼠标点击和触摸事件
+document.addEventListener('click', handleClickOrTouch);
+document.addEventListener('touchstart', handleClickOrTouch);
+// 监听键盘按键事件
+document.addEventListener('keydown', handleKeyPress);
